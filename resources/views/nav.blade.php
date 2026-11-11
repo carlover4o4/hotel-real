@@ -1,9 +1,6 @@
 <nav class="navbar navbar-expand-lg hotel-nav">
     <div class="container">
-        <a class="navbar-brand" href="{{ Auth::user()->role == 'admin' ? route('adminhome') : route('home') }}">
-            <span class="brand-mark">H</span>
-            <span>Haven<span style="color:#95BBEA">Stay</span></span>
-        </a>
+        <a class="navbar-brand" href="{{ Auth::user()->role == 'admin' ? route('adminhome') : route('home') }}">HavenStay</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#hotelNavbar" aria-controls="hotelNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
