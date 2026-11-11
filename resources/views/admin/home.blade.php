@@ -10,14 +10,9 @@
 <body>
     @include('nav')
     <main class="page-shell">
-        <div class="page-heading">
-            <div><div class="eyebrow">Ringkasan pengelolaan</div><h1>Dashboard</h1><p>Pantau reservasi tamu dan informasi kunjungan terbaru.</p></div>
-        </div>
-        <section class="hotel-hero">
-            <div class="hero-copy"><div class="eyebrow">HavenStay / Admin</div><h1>Kelola pengalaman menginap.</h1><p>Periksa data reservasi dan pastikan setiap tamu mendapatkan pelayanan terbaik.</p></div>
-        </section>
+        <div class="page-heading"><div><h1>Dashboard</h1><p>Daftar reservasi dan informasi tamu.</p></div></div>
         <section class="hotel-table-wrap">
-            <div class="page-heading mb-3"><div><div class="eyebrow">Data tamu</div><h1 style="font-size:24px">Daftar Reservasi</h1></div></div>
+            <div class="mb-3"><h5 class="mb-0">Daftar Reservasi</h5></div>
             <div class="table-responsive">
                 <table class="table" id="homeadmin">
                     <thead><tr><th>No</th><th>Nama Tamu</th><th>No. Telepon</th><th>No. Identitas</th><th>Email</th><th>Check-in</th><th>Check-out</th><th>Total Harga</th></tr></thead>
