@@ -1,236 +1,60 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservasi Kamar</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservasi Kamar - HavenStay</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"><link rel="stylesheet" href="{{ asset('css/hotel-theme.css') }}">
 </head>
 <body>
 @include('nav')
-
-@php
-    $lama = (strtotime($checkout) - strtotime($checkin)) / (60 * 60 * 24);
-    $total = $type->harga * $lama;
-@endphp
-
-<div class="container mt-5 mb-5">
-    <h3 class="mb-4">Reservasi Kamar</h3>
-
-    <div class="row">
-        <div class="col-md-5">
-            <div class="card">
-                <img src="{{ asset('storage/'.$type->foto) }}"
-                     class="card-img-top"
-                     style="height: 280px; object-fit: cover;">
-
+@php $lama = (strtotime($checkout) - strtotime($checkin)) / (60 * 60 * 24); $total = $type->harga * $lama; @endphp
+<main class="page-shell">
+    <div class="page-heading"><div><div class="eyebrow">Satu langkah lagi</div><h1>Konfirmasi Reservasi</h1><p>Lengkapi data berikut untuk melanjutkan pemesanan kamar.</p></div></div>
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <article class="hotel-card">
+                <img src="{{ asset('storage/'.$type->foto) }}" class="room-photo" style="height:270px" alt="Foto {{ $type->name }}">
                 <div class="card-body">
-                    <h4>{{ $room->name }}</h4>
-                    <p>Tipe: {{ $type->name }}</p>
-                    <p>{{ $type->deskripsi }}</p>
-                    <p>Fasilitas: {{ $type->fasilitas }}</p>
-
-                    <h5 class="text-primary">
-                        Rp{{ number_format($type->harga, 0, ',', '.') }} / malam
-                    </h5>
+                    <span class="room-type">{{ $type->name }}</span><h3 class="mt-3">{{ $room->name }}</h3>
+                    <p class="room-description">{{ $type->deskripsi }}</p><p class="room-description"><strong>Fasilitas:</strong> {{ $type->fasilitas }}</p>
+                    <div class="room-price">Rp{{ number_format($type->harga,0,',','.') }} <small class="muted fw-normal">/ malam</small></div>
                 </div>
+            </article>
+            <div class="booking-summary mt-3">
+                <div class="eyebrow">Ringkasan menginap</div>
+                <div class="d-flex justify-content-between mb-2"><span>Check-in</span><strong>{{ $checkin }}</strong></div>
+                <div class="d-flex justify-content-between mb-2"><span>Check-out</span><strong>{{ $checkout }}</strong></div>
+                <div class="d-flex justify-content-between mb-2"><span>Durasi</span><strong>{{ $lama }} malam</strong></div>
+                <hr><div class="d-flex justify-content-between"><strong>Total</strong><h4 class="mb-0">Rp{{ number_format($total,0,',','.') }}</h4></div>
             </div>
         </div>
-
-        <div class="col-md-7">
-            <div class="card p-4">
-                <form action="{{ route('booking') }}" method="POST">
-                    @csrf
-
+        <div class="col-lg-7">
+            <section class="hotel-form">
+                <form action="{{ route('booking') }}" method="POST">@csrf
                     <input type="hidden" name="room_id" value="{{ $room->id }}">
-
-                    <h5 class="mb-3">Data Customer</h5>
-
-                    <div class="mb-3">
-                        <label>Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control" required>
+                    <div class="section-label">Informasi Tamu</div>
+                    <div class="mb-3"><label>Nama Lengkap</label><input type="text" name="name" class="form-control" required></div>
+                    <div class="mb-3"><label>Email</label><input type="email" name="email" class="form-control" required></div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label>Nomor HP</label><input type="text" name="no_hp" class="form-control" required></div>
+                        <div class="col-md-6 mb-3"><label>Nomor Identitas</label><input type="text" name="no_identitas" class="form-control" required></div>
                     </div>
-
-                    <div class="mb-3">
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control" required>
+                    <div class="mb-3"><label>Alamat</label><textarea name="alamat" class="form-control" rows="3" required></textarea></div>
+                    <div class="section-label mt-4">Detail Reservasi</div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label>Check-in</label><input type="date" name="checkin" class="form-control" value="{{ $checkin }}" readonly></div>
+                        <div class="col-md-6 mb-3"><label>Check-out</label><input type="date" name="checkout" class="form-control" value="{{ $checkout }}" readonly></div>
                     </div>
-
-                    <div class="mb-3">
-                        <label>Nomor HP</label>
-                        <input type="text" name="no_hp" class="form-control" required>
+                    <div class="mb-3"><label>Total Harga</label><input type="text" class="form-control fw-bold" value="Rp{{ number_format($total,0,',','.') }}" readonly></div>
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        @if($sudahDipesan)<button type="button" class="btn btn-secondary" disabled>Sudah Terisi</button>@else<button type="submit" class="btn btn-primary">Konfirmasi Booking</button>@endif
+                        <a href="{{ route('home') }}" class="btn btn-secondary">Kembali</a>
                     </div>
-
-                    <div class="mb-3">
-                        <label>Nomor Identitas</label>
-                        <input type="text" name="no_identitas" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Alamat</label>
-                        <textarea name="alamat" class="form-control" required></textarea>
-                    </div>
-
-                    <hr>
-
-                    <h5 class="mb-3">Data Reservasi</h5>
-
-                    <div class="mb-3">
-                        <label>Check In</label>
-                        <input type="date" name="checkin"
-                            class="form-control"
-                            value="{{ $checkin }}" readonly>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Check Out</label>
-                        <input type="date" name="checkout"
-                            class="form-control"
-                            value="{{ $checkout }}" readonly>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Harga / Malam</label>
-                        <input type="text" class="form-control"
-                            value="Rp{{ number_format($type->harga, 0, ',', '.') }}"
-                            readonly>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Lama Menginap</label>
-                        <input type="text" class="form-control"
-                            value="{{ $lama }} Hari"
-                            readonly>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Total Harga</label>
-                        <input type="text" class="form-control fw-bold text-primary"
-                            value="Rp{{ number_format($total, 0, ',', '.') }}"
-                            readonly>
-                    </div>
-
-                    @if($sudahDipesan)
-                        <button type="button" class="btn btn-secondary" disabled>
-                            Sudah Terisi
-                        </button>
-                    @else
-                        <button type="submit" class="btn btn-primary">
-                            Booking Sekarang
-                        </button>
-                    @endif
-
-                    <a href="{{ route('home') }}" class="btn btn-secondary">
-                        Kembali
-                    </a>
-
                 </form>
-            </div>
+            </section>
         </div>
     </div>
-</div>
-
+</main>
+<script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
 </body>
 </html>
-
-
-
-{{-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservasi Kamar</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-</head>
-<body>
-@include('nav')
-<div class="container mt-5 mb-5">
-    <h3 class="mb-4">Reservasi Kamar</h3>
-    <div class="row">
-        <div class="col-md-5">
-            <div class="card">
-                <img src="{{ asset('storage/' . $room->foto) }}"
-                     class="card-img-top"
-                     style="height: 280px; object-fit: cover;">
-
-                <div class="card-body">
-                    <h4>{{ $room->name }}</h4>
-                    <p class="mb-2">
-                        Tipe: {{ $room->type }}
-                    </p>
-                    <p>{{ $room->deskripsi }}</p>
-                    <h5 class="text-primary">
-                        Rp{{ number_format($room->harga) }}
-                    </h5>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-7">
-            <div class="card p-4">
-                <form action="{{ route('booking') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="room_id" value="{{ $type->id }}">
-                    <input type="hidden" name="harga" value="{{ $type->harga }}">
-                    <h5 class="mb-3">Data Customer</h5>
-                    <div class="mb-3">
-                        <label class="form-label">Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Nomor HP</label>
-                        <input type="text" name="no_hp" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Nomor Identitas</label>
-                        <input type="text" name="no_identitas" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Alamat</label>
-                        <textarea name="alamat" class="form-control" required></textarea>
-                    </div>
-                    <hr>
-                    <h5 class="mb-3">Data Reservasi</h5>
-                    <div class="mb-3">
-                        <label class="form-label">Check In</label>
-                        <input type="date" name="checkin" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Check Out</label>
-                        <input type="date" name="checkout" class="form-control" required>
-                    </div>
-                
-                    <div class="mb-3">
-                        <label class="form-label">Total Harga</label>
-                        <input type="text" class="form-control"
-                            value="Rp{{ number_format($type->harga) }}"
-                            readonly>
-                        <small class="text-muted">
-                            Total pembayaran dihitung berdasarkan lama menginap.
-                        </small>
-                    </div>
-                    @if($sudahDipesan)
-                        <button type="button" class="btn btn-secondary" disabled>
-                            Sudah Terisi
-                        </button>
-                    @else
-                        <button type="submit" class="btn btn-primary">
-                            Booking Sekarang
-                        </button>
-                    @endif
-                    <a href="{{ route('home', $room->id) }}" class="btn btn-secondary">
-                        Kembali
-                    </a>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-</body>
-</html> --}}
