@@ -38,14 +38,14 @@ class DatabaseSeeder extends Seeder
             'harga' => 100000,
             'deskripsi' => 'kamar ini luas',
             'fasilitas' => 'AC,TV',
-            'foto' => 'foto/standard.jpg',        
+            'foto' => 'foto/room3.jpg',        
         ]);
          Type::create([
             'name' => 'Deluxe',
             'fasilitas' => 'AC,TV,KULKAS',
             'harga' => 90000,
             'deskripsi' => 'kamar ini luas',
-            'foto' => 'foto/deluxe.jpg',
+            'foto' => 'foto/room5.jpg',
         ]);
 
          Type::create([
@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
             'fasilitas' => 'AC,TV,KULKAS,Bathub',
             'harga' => 12000,
             'deskripsi' => 'kamar ini sangat cocok untuk anda',
-            'foto' => 'foto/superior.jpg',
+            'foto' => 'foto/room4.jpg',
         ]);
 
         Room::create([
