@@ -25,7 +25,7 @@
                             <td>
                                 @if ($reservasi)
                                     <form action="{{ route('poststatus', $reservasi->id) }}" method="POST">@csrf
-                                        <select name="status" class="form-select" onchange="this.form.submit()">
+                                        <select name="status" class="status-badge-select" onchange="this.form.submit()" aria-label="Ubah status kamar">
                                             <option value="kosong" {{ $reservasi->status == 'kosong' ? 'selected' : '' }}>Kosong</option>
                                             <option value="terisi" {{ $reservasi->status == 'terisi' ? 'selected' : '' }}>Terisi</option>
                                         </select>
